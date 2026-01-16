@@ -87,7 +87,7 @@ export default function AuditApp() {
   const [selectedCategory, setSelectedCategory] = useState('Vidro Temperado');
   const [newTaskText, setNewTaskText] = useState('');
 
-  // 0. Correção de Layout (Carrega Tailwind CSS via CDN se não estiver instalado)
+  // 0. Correção de Layout e Responsividade (CSS Global e Tailwind)
   useEffect(() => {
     // Injeta Tailwind CSS
     if (!document.getElementById('tailwind-cdn')) {
@@ -97,12 +97,32 @@ export default function AuditApp() {
       document.head.appendChild(script);
     }
 
+    // Injeta Estilos Globais para garantir Full Width/Height (Tela Cheia)
+    if (!document.getElementById('global-styles')) {
+      const style = document.createElement('style');
+      style.id = 'global-styles';
+      style.innerHTML = `
+        html, body, #root {
+          width: 100%;
+          min-height: 100%;
+          margin: 0;
+          padding: 0;
+          overflow-x: hidden;
+        }
+        /* Ajuste fino para inputs no mobile não darem zoom */
+        input, select, textarea {
+          font-size: 16px !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
     // Garante Meta Tag Viewport para Responsividade Mobile
     let meta = document.querySelector('meta[name="viewport"]');
     if (!meta) {
       meta = document.createElement('meta');
       meta.name = "viewport";
-      meta.content = "width=device-width, initial-scale=1.0";
+      meta.content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no";
       document.head.appendChild(meta);
     }
   }, []);
@@ -283,7 +303,7 @@ export default function AuditApp() {
   // Tela de Login
   if (!hasJoined) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-emerald-50 p-4 font-sans">
+      <div className="flex items-center justify-center min-h-screen w-full bg-emerald-50 p-4 font-sans">
         <div className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full border border-emerald-100">
           <div className="flex justify-center mb-6 text-emerald-600">
             <ClipboardList size={64} />
@@ -310,11 +330,11 @@ export default function AuditApp() {
 
   // Tela Principal (Dashboard vs Detalhes)
   return (
-    <div className="min-h-screen bg-emerald-50 font-sans text-slate-800">
+    <div className="min-h-screen w-full bg-emerald-50 font-sans text-slate-800 overflow-x-hidden">
       
-      {/* Header Verde */}
+      {/* Header Verde - W-FULL e PADDING ajustado para mobile */}
       <header className="bg-emerald-700 text-white shadow-md sticky top-0 z-20">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="w-full max-w-7xl mx-auto px-3 sm:px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3 overflow-hidden">
             {view === 'audit' ? (
               <button onClick={() => { setView('dashboard'); setSelectedAudit(null); }} className="hover:bg-emerald-600 p-1 rounded-full transition flex-shrink-0">
@@ -338,14 +358,15 @@ export default function AuditApp() {
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-6">
+      {/* Main - W-FULL e PADDING ajustado */}
+      <main className="w-full max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
         
         {/* VIEW: DASHBOARD (LISTA DE AUDITORIAS) */}
         {view === 'dashboard' && (
           <div className="space-y-8">
             
             {/* Card para Criar Nova Auditoria */}
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-emerald-100">
+            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-emerald-100">
               <h2 className="text-lg font-bold text-emerald-800 mb-4 flex items-center gap-2">
                 <Plus size={20} /> Nova Auditoria
               </h2>
@@ -384,7 +405,7 @@ export default function AuditApp() {
             {/* Lista de Auditorias em Andamento */}
             <div>
               <h3 className="text-emerald-900 font-bold mb-4 ml-1">Auditorias em Andamento</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 {audits.length === 0 ? (
                   <p className="text-slate-400 italic ml-1">Nenhuma auditoria iniciada.</p>
                 ) : (
@@ -392,25 +413,25 @@ export default function AuditApp() {
                     <div 
                       key={audit.id}
                       onClick={() => { setSelectedAudit(audit); setView('audit'); }}
-                      className="bg-white p-5 rounded-xl border border-emerald-100 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all cursor-pointer group relative"
+                      className="bg-white p-4 sm:p-5 rounded-xl border border-emerald-100 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all cursor-pointer group relative"
                     >
                       <div className="flex justify-between items-start mb-3">
-                        <div className="flex items-center gap-3">
-                          <div className="bg-emerald-100 p-2 rounded-lg text-emerald-700">
+                        <div className="flex items-center gap-3 w-full">
+                          <div className="bg-emerald-100 p-2 rounded-lg text-emerald-700 flex-shrink-0">
                             <Factory size={20} />
                           </div>
-                          <div>
-                            <h4 className="font-bold text-slate-800 group-hover:text-emerald-700 transition-colors">
+                          <div className="min-w-0 flex-grow">
+                            <h4 className="font-bold text-slate-800 group-hover:text-emerald-700 transition-colors truncate">
                               {audit.manufacturer}
                             </h4>
-                            <span className="text-xs font-medium px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">
+                            <span className="text-xs font-medium px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full inline-block truncate max-w-full">
                               {audit.category}
                             </span>
                           </div>
                         </div>
                         <button 
                           onClick={(e) => handleDeleteAudit(audit.id, e)}
-                          className="text-slate-300 hover:text-red-500 p-2 transition-colors"
+                          className="text-slate-300 hover:text-red-500 p-2 transition-colors flex-shrink-0"
                           title="Apagar auditoria"
                         >
                           <Trash2 size={16} />
@@ -444,8 +465,8 @@ export default function AuditApp() {
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
             
             {/* Status Card */}
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-emerald-100 mb-6 flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="min-w-0">
+            <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm border border-emerald-100 mb-6 flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="min-w-0 w-full text-center md:text-left">
                 <h2 className="text-xl font-bold text-slate-800 truncate">{selectedAudit.manufacturer}</h2>
                 <p className="text-emerald-600 font-medium">{selectedAudit.category}</p>
               </div>
