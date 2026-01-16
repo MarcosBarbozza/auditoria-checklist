@@ -28,7 +28,9 @@ import {
   LogOut,
   ArrowLeft,
   Factory,
-  LayoutDashboard
+  LayoutDashboard,
+  Calendar,
+  Clock
 } from 'lucide-react';
 
 // --- CONFIGURAÇÃO DO FIREBASE (CHAVES RESTAURADAS) ---
@@ -184,6 +186,21 @@ export default function AuditApp() {
 
 
   // --- FUNÇÕES ---
+
+  // Auxiliar para formatar data do Firestore
+  const formatDate = (timestamp) => {
+    if (!timestamp) return '...';
+    // Converte timestamp do Firestore para objeto Date JS
+    // Pode vir como objeto {seconds, nanoseconds} ou null se for pendente
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp.seconds * 1000);
+    
+    return date.toLocaleString('pt-BR', { 
+      day: '2-digit', 
+      month: '2-digit', 
+      hour: '2-digit', 
+      minute: '2-digit'
+    });
+  };
 
   const handleJoin = (e) => {
     e.preventDefault();
@@ -449,8 +466,13 @@ export default function AuditApp() {
                         <span>Progresso</span>
                         <span className="font-bold text-emerald-600">{audit.progress || 0}%</span>
                       </div>
-                      <div className="mt-3 text-xs text-slate-400 border-t border-slate-50 pt-2 flex items-center gap-1">
-                        <User size={10} /> Iniciado por {audit.createdBy}
+                      <div className="mt-3 text-xs text-slate-400 border-t border-slate-50 pt-2 flex flex-col gap-1">
+                        <div className="flex items-center gap-1">
+                          <User size={12} /> Iniciado por {audit.createdBy}
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar size={12} /> {formatDate(audit.createdAt)}
+                        </div>
                       </div>
                     </div>
                   ))
@@ -469,6 +491,9 @@ export default function AuditApp() {
               <div className="min-w-0 w-full text-center md:text-left">
                 <h2 className="text-xl font-bold text-slate-800 truncate">{selectedAudit.manufacturer}</h2>
                 <p className="text-emerald-600 font-medium">{selectedAudit.category}</p>
+                <p className="text-xs text-slate-400 mt-1 flex items-center justify-center md:justify-start gap-1">
+                  <Clock size={12} /> Criado em {formatDate(selectedAudit.createdAt)}
+                </p>
               </div>
               
               <div className="w-full md:w-1/3 text-center md:text-right flex-shrink-0">
@@ -510,9 +535,12 @@ export default function AuditApp() {
                       {task.text}
                     </p>
                     {task.completed && task.completedBy && (
-                      <p className="text-xs text-emerald-600 mt-1 font-medium flex items-center gap-1">
-                        <User size={12} /> Validado por {task.completedBy}
-                      </p>
+                      <div className="text-xs text-emerald-600 mt-1 font-medium flex flex-wrap items-center gap-x-2 gap-y-1">
+                        <span className="flex items-center gap-1"><User size={12} /> Validado por {task.completedBy}</span>
+                        {task.completedAt && (
+                           <span className="flex items-center gap-1 opacity-80 border-l border-emerald-200 pl-2"><Clock size={12} /> em {formatDate(task.completedAt)}</span>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>
