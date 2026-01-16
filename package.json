@@ -1,0 +1,26 @@
+{
+  "name": "auditoria-app",
+  "version": "0.0.0",
+  "description": "Lista de Auditoria",
+  "author": "",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "firebase": "^10.8.0",
+    "lucide-react": "^0.344.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "vite": "^4.4.5"
+  }
+}
