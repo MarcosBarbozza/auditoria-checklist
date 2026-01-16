@@ -89,11 +89,21 @@ export default function AuditApp() {
 
   // 0. Correção de Layout (Carrega Tailwind CSS via CDN se não estiver instalado)
   useEffect(() => {
+    // Injeta Tailwind CSS
     if (!document.getElementById('tailwind-cdn')) {
       const script = document.createElement('script');
       script.id = 'tailwind-cdn';
       script.src = "https://cdn.tailwindcss.com";
       document.head.appendChild(script);
+    }
+
+    // Garante Meta Tag Viewport para Responsividade Mobile
+    let meta = document.querySelector('meta[name="viewport"]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.name = "viewport";
+      meta.content = "width=device-width, initial-scale=1.0";
+      document.head.appendChild(meta);
     }
   }, []);
 
@@ -284,7 +294,7 @@ export default function AuditApp() {
             <input
               type="text"
               required
-              className="w-full p-3 border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+              className="w-full p-3 text-base border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
               placeholder="Seu Nome"
               value={auditorName}
               onChange={(e) => setAuditorName(e.target.value)}
@@ -305,24 +315,24 @@ export default function AuditApp() {
       {/* Header Verde */}
       <header className="bg-emerald-700 text-white shadow-md sticky top-0 z-20">
         <div className="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 overflow-hidden">
             {view === 'audit' ? (
-              <button onClick={() => { setView('dashboard'); setSelectedAudit(null); }} className="hover:bg-emerald-600 p-1 rounded-full transition">
+              <button onClick={() => { setView('dashboard'); setSelectedAudit(null); }} className="hover:bg-emerald-600 p-1 rounded-full transition flex-shrink-0">
                 <ArrowLeft size={24} />
               </button>
             ) : (
-              <LayoutDashboard size={24} />
+              <LayoutDashboard size={24} className="flex-shrink-0" />
             )}
-            <div>
-              <h1 className="font-bold text-lg leading-tight">
+            <div className="min-w-0">
+              <h1 className="font-bold text-lg leading-tight truncate max-w-[200px] md:max-w-none">
                 {view === 'audit' ? selectedAudit?.manufacturer : 'Painel de Auditorias'}
               </h1>
-              <p className="text-xs text-emerald-100 opacity-80">
+              <p className="text-xs text-emerald-100 opacity-80 truncate">
                 {view === 'audit' ? selectedAudit?.category : `Olá, ${auditorName}`}
               </p>
             </div>
           </div>
-          <button onClick={handleLogout} className="text-emerald-100 hover:text-white">
+          <button onClick={handleLogout} className="text-emerald-100 hover:text-white flex-shrink-0 ml-2">
             <LogOut size={20} />
           </button>
         </div>
@@ -346,7 +356,7 @@ export default function AuditApp() {
                     type="text"
                     required
                     placeholder="Nome da empresa..."
-                    className="w-full p-3 bg-emerald-50 border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                    className="w-full p-3 text-base bg-emerald-50 border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                     value={newManufacturer}
                     onChange={(e) => setNewManufacturer(e.target.value)}
                   />
@@ -354,7 +364,7 @@ export default function AuditApp() {
                 <div className="md:w-1/3">
                   <label className="text-xs font-bold text-emerald-600 uppercase mb-1 block">Categoria</label>
                   <select 
-                    className="w-full p-3 bg-emerald-50 border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                    className="w-full p-3 text-base bg-emerald-50 border border-emerald-200 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none appearance-none"
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
                   >
@@ -435,12 +445,12 @@ export default function AuditApp() {
             
             {/* Status Card */}
             <div className="bg-white rounded-xl p-6 shadow-sm border border-emerald-100 mb-6 flex flex-col md:flex-row items-center justify-between gap-6">
-              <div>
-                <h2 className="text-xl font-bold text-slate-800">{selectedAudit.manufacturer}</h2>
+              <div className="min-w-0">
+                <h2 className="text-xl font-bold text-slate-800 truncate">{selectedAudit.manufacturer}</h2>
                 <p className="text-emerald-600 font-medium">{selectedAudit.category}</p>
               </div>
               
-              <div className="w-full md:w-1/3 text-center md:text-right">
+              <div className="w-full md:w-1/3 text-center md:text-right flex-shrink-0">
                 <div className="text-3xl font-bold text-emerald-600 mb-1">
                   {Math.round((tasks.filter(t => t.completed).length / (tasks.length || 1)) * 100)}%
                 </div>
@@ -497,7 +507,7 @@ export default function AuditApp() {
                   value={newTaskText}
                   onChange={(e) => setNewTaskText(e.target.value)}
                   placeholder="Adicionar tarefa extra..."
-                  className="flex-grow p-3 bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                  className="flex-grow p-3 text-base bg-white border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
                 />
                 <button 
                   type="submit"
