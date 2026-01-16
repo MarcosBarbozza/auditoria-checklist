@@ -31,7 +31,7 @@ import {
   LayoutDashboard
 } from 'lucide-react';
 
-// --- CONFIGURAÇÃO (COLE SUAS CHAVES AQUI) ---
+// --- CONFIGURAÇÃO DO FIREBASE (CHAVES RESTAURADAS) ---
 const firebaseConfig = {
   apiKey: "AIzaSyApKuDndhETHEugLo6Na_dMjJD9qN0WtEM",
   authDomain: "auditoria-checklist-2eab4.firebaseapp.com",
@@ -86,6 +86,16 @@ export default function AuditApp() {
   const [newManufacturer, setNewManufacturer] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('Vidro Temperado');
   const [newTaskText, setNewTaskText] = useState('');
+
+  // 0. Correção de Layout (Carrega Tailwind CSS via CDN se não estiver instalado)
+  useEffect(() => {
+    if (!document.getElementById('tailwind-cdn')) {
+      const script = document.createElement('script');
+      script.id = 'tailwind-cdn';
+      script.src = "https://cdn.tailwindcss.com";
+      document.head.appendChild(script);
+    }
+  }, []);
 
   // 1. Autenticação
   useEffect(() => {
