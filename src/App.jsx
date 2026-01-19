@@ -52,11 +52,12 @@ const AUDIT_TEMPLATES = {
     'Foto coleta na pasta',
     'Foto auditoria'
   ],
-  'Vidro Laminado': [
+  'Esquadrias Aço': [
     'Relatório de auditoria',
-    'Verificação de Polivinil',
-    'Autoclave Teste',
-    'Foto coleta na pasta'
+    'Formulário de coleta',
+    'Preenchimento Lista Mestra',
+    'Foto coleta na pasta',
+    'Foto auditoria'
   ],
   'Padrão Geral': [
     'Documentação Inicial',
