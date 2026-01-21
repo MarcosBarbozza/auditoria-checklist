@@ -57,7 +57,8 @@ const AUDIT_TEMPLATES = {
     'Formulário de coleta',
     'Preenchimento Lista Mestra',
     'Foto coleta na pasta',
-    'Foto auditoria'
+    'Foto auditoria',
+    'Lista de Assinaturas'
   ],
   'Padrão Geral': [
     'Documentação Inicial',
