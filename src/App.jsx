@@ -46,24 +46,35 @@ const firebaseConfig = {
 // --- MODELOS DE AUDITORIA (EDITE AQUI PARA ADICIONAR MAIS) ---
 const AUDIT_TEMPLATES = {
   'Vidro Temperado': [
+    'Plano de auditoria enviado Cliente',
+    'Plano de auditoria assinado na pasta',
+    'Lista de assinaturas na pasta',
     'Relatório de auditoria',
     'Formulário de coleta',
     'Preenchimento Lista Mestra',
-    'Foto coleta na pasta',
-    'Foto auditoria'
+    'Foto auditoria',
+    'Verificação final de documentos na pasta'
   ],
   'Esquadrias Aço': [
+    'Plano de auditoria enviado Cliente',
+    'Plano de auditoria assinado na pasta',
+    'Lista de assinaturas na pasta',
+    'Relatório de auditoria',
+    'Formulário de coleta',
+    'Envio do RQ 007 - Corrosão',
+    'Preenchimento Lista Mestra',
+    'Foto auditoria',
+    'Verificação final de documentos na pasta'
+  ],
+  'Esquadrias Alumínio': [
+    'Plano de auditoria enviado Cliente',
+    'Plano de auditoria assinado na pasta',
+    'Lista de assinaturas na pasta',
     'Relatório de auditoria',
     'Formulário de coleta',
     'Preenchimento Lista Mestra',
-    'Foto coleta na pasta',
     'Foto auditoria',
-    'Lista de Assinaturas'
-  ],
-  'Padrão Geral': [
-    'Documentação Inicial',
-    'Fotos do Local',
-    'Relatório Final'
+    'Verificação final de documentos na pasta'
   ]
 };
 
